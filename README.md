@@ -31,6 +31,17 @@ Cada persona necessita el seu propi projecte de Google Cloud i les seves pròpie
    ```
    Obre la URL que et mostra, autoritza amb el teu compte de Gmail, i copia el `GMAIL_REFRESH_TOKEN` resultant a `.env`.
 
+## Gmail personal (@gmail.com) vs. Google Workspace
+
+Amb un compte de **Google Workspace** (d'una organització/empresa), pots triar el tipus **"Internal"** a la OAuth consent screen: el refresh token no caduca i tot funciona sense límits addicionals.
+
+Amb un **Gmail personal**, no existeix l'opció "Internal" — cal anar per **"External"**. Mentre l'app estigui en mode **Testing** (l'estat per defecte, sense verificar per Google), hi ha dues limitacions importants:
+
+- **El refresh token caduca cada 7 dies.** Passat aquest temps, cal tornar a executar `npm run auth` i actualitzar `GMAIL_REFRESH_TOKEN` a `.env`, o el servidor deixarà de poder autenticar-se.
+- Màxim 100 usuaris de prova poden autoritzar l'app.
+
+Aquestes limitacions només desapareixen si es passa l'app pel procés de **verificació de Google** (obligatori per als scopes de Gmail, ja que es consideren sensibles/restringits): auditoria de seguretat, política de privacitat pública, domini verificat, etc. És un procés de setmanes pensat per a apps distribuïdes a molts usuaris — normalment no val la pena per a un ús personal com aquest. Si el token et caduca sovint, el més senzill és re-executar `npm run auth` cada vegada.
+
 ## Registrar-lo a Claude Code
 
 ```
